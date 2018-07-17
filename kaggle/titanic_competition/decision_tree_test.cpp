@@ -26,7 +26,7 @@ decision_tree::DecisionTree constructor_test()
  
 	for (int i = 0;i < train_data.size();i++) {
 
-		vector<string> vec(train_data[i].begin(), train_data[i].end()-1);
+		vector<string> vec(train_data[i].begin(), train_data[i].end());
 		std::cout << "here: " << vec << " " << vec.size() << std::endl;
 		train_data_final.push_back(vec);
 		data_label.push_back(train_data[i].back());
@@ -102,7 +102,7 @@ void grow_tree_test(decision_tree::DecisionTree& tree)
 int main()
 {
 	decision_tree::DecisionTree tree = constructor_test();
-	cout << "new table: " << tree.table_data() << endl;
+	//cout << "new table: " << tree.table_data() << endl;
 	cal_gain_test(tree);
 	choose_feature_test(tree);
 	choose_data_test(tree);
