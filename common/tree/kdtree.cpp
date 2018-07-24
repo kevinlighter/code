@@ -1,37 +1,49 @@
-#include "kdtree.h"
+#include "KDTreeT.h"
 
 using namespace std;
 
-namespace common::tree::kdtree {
+namespace common::tree::KDTree {
 
 
-KDTree::KDTree(const int& dimension):
+KDTreeT<T>::KDTreeT(const int& dimension):
 	dimension_(dimension)
 {
 	tree_.clear();
 	srand (time(NULL));
 }
 
-int KDTree::chooseAxis(const int& depth)
+int KDTreeT::chooseAxis(const int& depth)
 {
 	return depth % dimension_;
 }
 
-void KDTree::grow_tree(const vector<vector<T>>& data, const unordered_set<int>& data_index, int& depth)
+template <typename T>
+void KDTreeT<T>::grow_tree(const vector<vector<T>>& data, const unordered_set<int>& data_index, 
+						   const int& depth, const int& parent_node_number)
 {
 	int chosen_axis = this->chooseAxis(depth);
 	int median_point_index = this->medianPointIndex(data, chosen_axis);
 
+
+	unordered_set<int> left_indexes;
+	unordered_set<int> right_indexes;
+	this->spilt_indexes(data, left_indexes, right_indexes, chosen_axis, median_point_index);
+
+	/// Grow tree in the left node
+	this->grow_tree(data, left_indexes, depth+1);
+	/// Grow tree in the right node
+	this->grow_tree(data, right_indexes, depth+1);
 }
 
-int KDTree::medianPointIndex(const vector<vector<T>>& data, const int& dth)
+template <typename T>
+int KDTreeT<T>::medianPointIndex(const vector<vector<T>>& data, const int& dth)
 {	
 	int shuffle_size = num_for_sorting_;
 	if (data.size() < num_for_sorting_)
 		shuffle_size = data.size();
 
 	// fill a vector with 0 to n-1
-	std::vector<int> vec(shuffle_size) ; 
+	std::vector<int> vec(data.size()) ; 
 	std::iota (std::begin(vec), std::end(vec), 0); 
 
 	// shuffle the vector randomly
@@ -49,6 +61,24 @@ int KDTree::medianPointIndex(const vector<vector<T>>& data, const int& dth)
 	// data index
 	return map[ pre_sort[shuffle_size / 2] ];
 }
+
+template <typename T>
+void KDTreeT<T>::spilt_indexes(const vector<vector<T>>& data, unordered_set<int>& left_indexes,
+						unordered_set<int>& right_indexes, const int& axis, const int& median_index)
+{
+	T median_feature = data[median_index][axis];
+	for (int i=0;i<data.size();i++) {
+		if (data[i][axis] < median_feature) {
+			left_indexes.insert(i);
+		} else {
+			right_indexes.insert(i);
+		}
+	}
+}
+
+
+template class KDTreeT<double>;
+template class KDTreeT<std::string>;
 
 
 }
