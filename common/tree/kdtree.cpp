@@ -1,25 +1,28 @@
-#include "KDTreeT.h"
+#include "kdtree.h"
 
 using namespace std;
 
-namespace common::tree::KDTree {
+namespace common {
 
+namespace tree {
 
+namespace KDTree {
+
+template <typename T>
 KDTreeT<T>::KDTreeT(const int& dimension):
 	dimension_(dimension)
 {
-	tree_.clear();
 	srand (time(NULL));
 }
 
-int KDTreeT::chooseAxis(const int& depth)
+template <typename T>
+int KDTreeT<T>::chooseAxis(const int& depth)
 {
 	return depth % dimension_;
 }
 
 template <typename T>
-void KDTreeT<T>::grow_tree(const vector<vector<T>>& data, const unordered_set<int>& data_index, 
-						   const int& depth, const int& parent_node_number)
+NodeT<T>* KDTreeT<T>::grow_tree(const vector<vector<T>>& data, const unordered_set<int>& data_index, const int& depth)
 {
 	int chosen_axis = this->chooseAxis(depth);
 	int median_point_index = this->medianPointIndex(data, chosen_axis);
@@ -29,10 +32,18 @@ void KDTreeT<T>::grow_tree(const vector<vector<T>>& data, const unordered_set<in
 	unordered_set<int> right_indexes;
 	this->spilt_indexes(data, left_indexes, right_indexes, chosen_axis, median_point_index);
 
-	/// Grow tree in the left node
-	this->grow_tree(data, left_indexes, depth+1);
-	/// Grow tree in the right node
-	this->grow_tree(data, right_indexes, depth+1);
+	NodeT<T> new_node;
+	new_node.value = data[median_point_index][chosen_axis];
+	new_node.spilt_axis = chosen_axis;
+
+	/// if either of the set is not empty, iterator on the specific side
+	if (!left_indexes.empty())
+		new_node.left_node = this->grow_tree(data, left_indexes, depth+1);
+
+	if (!right_indexes.empty())
+		new_node.right_node = this->grow_tree(data, right_indexes, depth+1);
+
+	return &new_node;
 }
 
 template <typename T>
@@ -81,4 +92,6 @@ template class KDTreeT<double>;
 template class KDTreeT<std::string>;
 
 
+}
+}
 }
