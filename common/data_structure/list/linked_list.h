@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include <assert.h>
 
 using namespace std;
 
@@ -50,13 +51,29 @@ void push_back(T newdata, shared_ptr<NodeT<T>>* ref_head);
 template <class T>
 T delete_front(shared_ptr<NodeT<T>>* ref_head);
 
-/// delete back given a head
-template <class T>
-T delete_back(shared_ptr<NodeT<T>>* ref_head);
-
 /// delete nth position given a head
 template <class T>
 T delete_n(int n, shared_ptr<NodeT<T>>* ref_head);
+
+/// function to count the number of appearance of a value
+template <class T>
+int count(T value, shared_ptr<NodeT<T>>* ref_head);
+
+/// function to get the nth value in a list
+template <class T>
+T val_nth(int n, const shared_ptr<NodeT<T>>* ref_head);
+
+/// function to delete a list, by deallocating all the memory
+template <class T>
+void delete_list(shared_ptr<NodeT<T>>* ref_head);
+ 
+/// function to take a sorted list with increasing order, and a new
+/// node of some specific number, insert the new node to the right position
+template <class T>
+void sortedMerge(shared_ptr<NodeT<T>>* ref_head, const shared_ptr<NodeT<T>>* new_head);
+
+/// function to take two lists and append the second to the first list
+void append(shared_ptr<NodeT<T>>* first_ref_head, shared_ptr<NodeT<T>>* second_ref_head);
 
 /// Build One Two Three list
 shared_ptr<NodeT<int>> BuildOneTwoThree();
