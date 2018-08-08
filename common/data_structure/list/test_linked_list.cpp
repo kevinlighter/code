@@ -62,6 +62,40 @@ void test_delete_n_func(shared_ptr<NodeT<int>>* ref_head, int n)
 	std::cout << "delete " << n << "th: " << delete_n(n, ref_head) << " from the list" << std::endl;
 }
 
+void test_sorted_insert(shared_ptr<NodeT<int>>* ref_head, shared_ptr<NodeT<int>> node) {
+	sorted_insert<int>(ref_head, node);
+}
+
+void test_append(shared_ptr<NodeT<int>>* head_one, shared_ptr<NodeT<int>>* head_two) {
+	std::cout << "test appending two lists" << std::endl;
+	append<int>(head_one, head_two);
+}
+
+void test_insert_sort(shared_ptr<NodeT<int>>* ref_head)
+{
+	std::cout << "test insert sort" << std::endl;
+	insert_sort(ref_head);
+}
+
+void test_remove_duplicate(shared_ptr<NodeT<int>>* ref_head)
+{
+	std::cout << "test remove duplicate" << std::endl;
+	remove_duplicate(ref_head);
+}
+
+void test_front_back_spilt(shared_ptr<NodeT<int>>* ref_head,
+							shared_ptr<NodeT<int>>* front_head,
+							shared_ptr<NodeT<int>>* back_head)
+{
+	front_back_spilt<int>(ref_head, front_head, back_head);
+}
+
+void test_move_node(shared_ptr<NodeT<int>>* dest_head,
+	shared_ptr<NodeT<int>>* source_head) 
+{
+	move_node<int>(dest_head, source_head);
+}
+
 int main() {
 
 	auto head = test_create_head();
@@ -84,5 +118,37 @@ int main() {
 
 	test_delete_n_func(&head, 14);
 	print(&head);
+
+	// auto node = create_dummy<int>(0);
+	// test_sorted_insert(&head, node);
+	// print(&head);
+
+	auto headTwo = create_dummy<int>(0);
+	test_append(&head, &headTwo);
+	print(&head);
+
+	//insert_sort(&head);
+
+	test_insert_sort(&head);
+	print(&head);
+
+	test_remove_duplicate(&head);
+	print(&head);
+
+	std::cout << "length of list: " << length<int>(head) << std::endl;
+
+	shared_ptr<NodeT<int>> front_head;
+	shared_ptr<NodeT<int>> back_head;
+
+	test_front_back_spilt(&(head), &front_head, &back_head);
+	print(&front_head);
+	print(&back_head);
+
+	auto dest_head = BuildOneTwoThree();
+	auto source_head = BuildOneTwoThree();
+	test_move_node(&dest_head, &source_head);
+	print(&dest_head);
+	print(&source_head);
+
 
 }

@@ -160,7 +160,7 @@ T delete_front(shared_ptr<NodeT<T>>* ref_head)
 template int delete_front(shared_ptr<NodeT<int>>*);
 template std::string delete_front(shared_ptr<NodeT<std::string>>*);
 
-template <class T>
+template <typename T>
 T delete_n(int n, shared_ptr<NodeT<T>>* ref_head)
 {
 	assert(n >= 0 && "delete_n func error: n is negative!");
@@ -185,6 +185,145 @@ T delete_n(int n, shared_ptr<NodeT<T>>* ref_head)
 
 template int delete_n(int, shared_ptr<NodeT<int>>*);
 template std::string delete_n(int, shared_ptr<NodeT<std::string>>*);
+
+template <typename T>
+void sorted_insert(shared_ptr<NodeT<T>>* ref_head, shared_ptr<NodeT<T>> inserted_head)
+{
+	T value = inserted_head->value;
+	auto curPtr = *ref_head;
+
+	assert(curPtr != nullptr && "sorted_insert error: input ref head is nullptr");
+	if (curPtr->value > inserted_head->value) {
+		inserted_head->next = curPtr;
+		*ref_head = inserted_head;
+		return;
+	}
+
+	while (curPtr != nullptr) {
+		if (curPtr->next == nullptr) {
+			curPtr->next = inserted_head;
+			return;
+		} else {
+			if (curPtr->value <= value && curPtr->next->value > value) {
+				inserted_head->next = curPtr->next;
+				curPtr->next = inserted_head;
+				return;
+			} else {
+				curPtr = curPtr->next;
+			}
+		}
+	}
+}
+
+template void sorted_insert(shared_ptr<NodeT<int>>*, shared_ptr<NodeT<int>>);
+template void sorted_insert(shared_ptr<NodeT<std::string>>*, shared_ptr<NodeT<std::string>>);
+
+template <typename T>
+void insert_sort(shared_ptr<NodeT<T>>* ref_head)
+{
+	auto curPtr = *ref_head;
+	assert(curPtr != nullptr && "insert_sort error: input list is empty!");
+	auto basenode = create_dummy<T>(curPtr->value);
+	curPtr = curPtr->next;
+	while (curPtr != nullptr) {
+		auto newnode = create_dummy<T>(curPtr->value);
+		sorted_insert<T>(&basenode, newnode);
+		curPtr = curPtr->next;
+	}
+	*ref_head = basenode;
+}
+
+// template void insert_sort(shared_ptr<NodeT<int>>*);
+// template void insert_sort(shared_ptr<NodeT<std::string>>*);
+
+template void insert_sort(shared_ptr<NodeT<int>>*);
+template void insert_sort(shared_ptr<NodeT<std::string>>*);
+
+template <typename T>
+void append(shared_ptr<NodeT<T>>* first_ref_head, shared_ptr<NodeT<T>>* second_ref_head)
+{
+	auto curPtr = *first_ref_head;
+	shared_ptr<NodeT<T>> pre_head;
+	while (curPtr != nullptr) {
+		pre_head = curPtr;
+		curPtr = curPtr->next;
+	}
+	pre_head->next = *second_ref_head;
+	second_ref_head = nullptr;
+}
+
+template void append(shared_ptr<NodeT<int>>*, shared_ptr<NodeT<int>>*);
+template void append(shared_ptr<NodeT<std::string>>*, shared_ptr<NodeT<std::string>>*);
+
+template <typename T>
+void remove_duplicate(shared_ptr<NodeT<T>>* ref_head)
+{
+	auto curPtr = *ref_head;
+	if (curPtr == nullptr) {
+		return;
+	}
+	while (curPtr->next != nullptr) {
+		if (curPtr->value == curPtr->next->value) {
+			curPtr->next = curPtr->next->next;
+		}
+		curPtr = curPtr->next;
+	}
+}
+
+template void remove_duplicate(shared_ptr<NodeT<int>>*);
+template void remove_duplicate(shared_ptr<NodeT<std::string>>*);
+
+template <typename T>
+void front_back_spilt(shared_ptr<NodeT<T>>* ref_head,
+					shared_ptr<NodeT<T>>* front_ref_head,
+					shared_ptr<NodeT<T>>* back_ref_head)
+{
+	auto fastPtr = *ref_head;
+	auto slowPtr = *ref_head;
+	*front_ref_head = *ref_head;
+
+	if (fastPtr == nullptr) {
+		back_ref_head = nullptr;
+		return;
+	}
+
+	if (fastPtr->next == nullptr) {
+		back_ref_head = nullptr;
+		return;
+	}
+
+	while (fastPtr != nullptr && fastPtr->next != nullptr) {
+		if (fastPtr->next->next != nullptr) {
+			slowPtr = slowPtr->next;
+			fastPtr = fastPtr->next->next;
+		} else {
+			break;
+		}
+
+	}
+	*back_ref_head = slowPtr->next;
+	slowPtr->next = nullptr;
+}
+
+template void front_back_spilt(shared_ptr<NodeT<int>>*,
+							   shared_ptr<NodeT<int>>*,
+							   shared_ptr<NodeT<int>>*);
+template void front_back_spilt(shared_ptr<NodeT<std::string>>*,
+								shared_ptr<NodeT<std::string>>*,
+								shared_ptr<NodeT<std::string>>*);
+
+template <typename T>
+void move_node(shared_ptr<NodeT<T>>* dest_head, shared_ptr<NodeT<T>>* source_head)
+{
+	auto destPtr = *dest_head;
+	auto sourcePtr = *source_head;
+	*source_head = (*source_head)->next;
+	sourcePtr->next = destPtr;
+	*dest_head = sourcePtr;
+}
+
+template void move_node(shared_ptr<NodeT<int>>*, shared_ptr<NodeT<int>>*);
+template void move_node(shared_ptr<NodeT<std::string>>*, shared_ptr<NodeT<std::string>>*);
 
 template class NodeT<int>;
 template class NodeT<double>;
