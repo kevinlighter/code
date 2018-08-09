@@ -100,6 +100,7 @@ void move_node(shared_ptr<NodeT<T>>* dest_head, shared_ptr<NodeT<T>>* source_hea
 /// input a list, output two list which is the alternating element
 /// of the original list: so if A = {a,b,a,b,a}, then output two lists
 /// b = {a,a,a} and c = {b,b}
+/// with the help function move_node();
 template <class T>
 void alternating_spilt(shared_ptr<NodeT<T>>* ref_head,
 					shared_ptr<NodeT<T>>* first_ref_head,
@@ -109,9 +110,8 @@ void alternating_spilt(shared_ptr<NodeT<T>>* ref_head,
 /// input a = {1,2,3}, b = {4,5,6}, output list should be 
 /// C = {1,4,2,5,3,6}
 template <class T>
-void shuffle_merge(shared_ptr<NodeT<T>>* first_head,
-					shared_ptr<NodeT<T>>* second_head,
-					shared_ptr<NodeT<T>>* ref_head);
+shared_ptr<NodeT<T>>* shuffle_merge(shared_ptr<NodeT<T>>* first_head,
+					shared_ptr<NodeT<T>>* second_head);
 
 /// Build One Two Three list
 shared_ptr<NodeT<int>> BuildOneTwoThree();

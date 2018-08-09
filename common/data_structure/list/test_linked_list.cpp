@@ -96,6 +96,18 @@ void test_move_node(shared_ptr<NodeT<int>>* dest_head,
 	move_node<int>(dest_head, source_head);
 }
 
+void test_alternating_spilt(shared_ptr<NodeT<int>>* ref_head,
+					shared_ptr<NodeT<int>>* first_ref_head,
+					shared_ptr<NodeT<int>>* second_ref_head)
+{
+	alternating_spilt<int>(ref_head, first_ref_head, second_ref_head);
+}
+
+shared_ptr<NodeT<int>>* test_shuffle_merge(shared_ptr<NodeT<int>>* first_ref, shared_ptr<NodeT<int>>* second_ref)
+{
+	return shuffle_merge<int>(first_ref, second_ref);
+}
+
 int main() {
 
 	auto head = test_create_head();
@@ -151,4 +163,17 @@ int main() {
 	print(&source_head);
 
 
+	auto head1 = create_dummy<int>();
+	auto head2 = create_dummy<int>();
+	print(&head);
+	test_alternating_spilt(&head, &head1, &head2);
+	print(&head);
+	print(&head1);
+	print(&head2);
+
+	auto first_head = BuildOneTwoThree();
+	auto second_head = BuildOneTwoThree();
+	auto ref_head = test_shuffle_merge(&first_head, &second_head);
+	//std::cout << "aaa" << length<int>(*ref_head) << std::endl;
+	//print(&first_head);
 }

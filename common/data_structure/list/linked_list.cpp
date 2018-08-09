@@ -325,6 +325,50 @@ void move_node(shared_ptr<NodeT<T>>* dest_head, shared_ptr<NodeT<T>>* source_hea
 template void move_node(shared_ptr<NodeT<int>>*, shared_ptr<NodeT<int>>*);
 template void move_node(shared_ptr<NodeT<std::string>>*, shared_ptr<NodeT<std::string>>*);
 
+template <class T>
+void alternating_spilt(shared_ptr<NodeT<T>>* ref_head,
+					shared_ptr<NodeT<T>>* first_ref_head,
+					shared_ptr<NodeT<T>>* second_ref_head)
+{
+	int i=0;
+	shared_ptr<NodeT<T>> first_Ptr = nullptr;
+	shared_ptr<NodeT<T>> second_Ptr = nullptr;
+	while (*ref_head != nullptr) {
+		if (i%2 == 0) {
+			move_node<T>(&first_Ptr, ref_head);
+		} else {
+			move_node<T>(&second_Ptr, ref_head);
+		}
+		i++;
+	}
+	*first_ref_head = first_Ptr;
+	*second_ref_head = second_Ptr;
+}
+
+template void alternating_spilt(shared_ptr<NodeT<int>>*, shared_ptr<NodeT<int>>*, shared_ptr<NodeT<int>>*);
+template void alternating_spilt(shared_ptr<NodeT<std::string>>*, shared_ptr<NodeT<std::string>>*, shared_ptr<NodeT<std::string>>*);
+
+template <class T>
+shared_ptr<NodeT<T>>* shuffle_merge(shared_ptr<NodeT<T>>* first_head,
+					shared_ptr<NodeT<T>>* second_head)
+{
+	std::cout << "first" << *first_head << std::endl;
+	shared_ptr<NodeT<T>>* ref_head;
+	auto curPtr = *first_head;
+	while (curPtr != nullptr) {
+		move_node<T>(ref_head, &curPtr);
+	}
+	//std::cout << length<T>(*ref_head) << std::endl;
+	return ref_head;
+}
+
+template shared_ptr<NodeT<int>>* shuffle_merge(shared_ptr<NodeT<int>>*, shared_ptr<NodeT<int>>*);
+template shared_ptr<NodeT<std::string>>* shuffle_merge(shared_ptr<NodeT<std::string>>*, shared_ptr<NodeT<std::string>>*);
+
+
+
+
+
 template class NodeT<int>;
 template class NodeT<double>;
 template class NodeT<std::string>;
