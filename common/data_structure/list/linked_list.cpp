@@ -234,9 +234,12 @@ void remove_duplicate(Node** ref_head)
 	}
 	while (curPtr->next != NULL) {
 		if (curPtr->val == curPtr->next->val) {
-			curPtr->next = curPtr->next->next;
+			Node* nextNext = curPtr->next->next;
+			free(curPtr->next);
+			curPtr->next = nextNext;
+		} else {
+			curPtr = curPtr->next;
 		}
-		curPtr = curPtr->next;
 	}
 }
 
