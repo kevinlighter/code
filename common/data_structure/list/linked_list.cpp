@@ -302,14 +302,126 @@ void alternating_spilt(Node** ref_head,
 Node* shuffle_merge(Node** first_head,
 					Node** second_head)
 {
-	std::cout << "first" << *first_head << std::endl;
 	Node* new_head = NULL;
-	auto curPtr = *first_head;
-	while (curPtr != NULL) {
-		move_node(&new_head, &curPtr);
+	Node** last_node_ref = &new_head;
+
+	while (1) { 
+		if (*first_head == NULL) {
+			*last_node_ref = *second_head;
+			break;
+		} else if (*second_head == NULL) {
+			*last_node_ref = *first_head;
+			break;
+		} else {
+			move_node(last_node_ref, first_head);
+			last_node_ref = &((*last_node_ref)->next);
+			move_node(last_node_ref, second_head);
+			last_node_ref = &((*last_node_ref)->next);
+		}
 	}
 	//std::cout << length<T>(*ref_head) << std::endl;
 	return new_head;
+}
+
+Node* sorted_merge(Node** first_head, Node** second_head)
+{
+	Node* new_head = NULL;
+	Node** last_node_ref = &new_head;
+
+	while (1) {
+		if (*first_head == NULL) {
+			*last_node_ref = *second_head;
+			break;
+		} else if (*second_head == NULL) {
+			*last_node_ref = *first_head;
+			break;
+		} else {
+			if ((*first_head)->val < (*second_head)->val) {
+				move_node(last_node_ref, first_head);
+			} else {
+				move_node(last_node_ref, second_head);
+			}
+			last_node_ref = &((*last_node_ref)->next);
+		}
+	}
+	return new_head;
+}
+
+void merge_sort(Node** ref_head)
+{
+	if (length(*ref_head) == 1 || length(*ref_head) == 0)
+		return;
+	/// spilt the ref list into smaller lists
+	Node* firstPtr = new Node();
+	Node* secondPtr = new Node();
+	front_back_spilt(ref_head, &firstPtr, &secondPtr);
+	merge_sort(&firstPtr);
+	merge_sort(&secondPtr);
+	*ref_head = sorted_merge(&firstPtr, &secondPtr);
+}
+
+Node* sorted_intersect(Node** first_head, Node** second_head)
+{
+	Node* resultPtr = NULL;
+	Node** ref_head = &resultPtr;
+
+	auto firstPtr = *first_head;
+	auto secondPtr = *second_head;
+
+	while (1) {
+		if (firstPtr == NULL || secondPtr == NULL) {
+			break;
+		} 
+		if (firstPtr->val == secondPtr->val) {
+			push_front(ref_head, firstPtr->val);
+			firstPtr = firstPtr->next;
+		} else {
+			if (firstPtr->val < secondPtr->val) {
+				firstPtr = firstPtr->next;
+			} else {
+				secondPtr = secondPtr->next;
+			}
+		}
+	}
+	return resultPtr;
+}
+
+void reverse(Node** ref_head)
+{
+	if (*ref_head == NULL) {
+		return;
+	}
+	Node* newnode = NULL;
+	Node** new_ref = &newnode;
+	while (*ref_head != NULL) {
+		move_node(new_ref, ref_head);
+	}
+	*ref_head = *new_ref;
+
+}
+
+void recursive_reverse(Node** ref_head)
+{
+	Node* first = NULL;
+	Node* rest = NULL;
+
+	if (*ref_head == NULL) {
+		return; // Base case for empty list
+	} 
+
+	first = *ref_head;
+	rest = (*ref_head)->next;
+
+	if (rest == NULL) {
+		return; // if rest is empty, return since the list is done
+	}
+
+	recursive_reverse(&rest);
+
+	first->next->next = first;
+	first->next = NULL;
+
+	*ref_head = rest;
 }
 
 

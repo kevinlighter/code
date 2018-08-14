@@ -108,6 +108,49 @@ Node* test_shuffle_merge(Node** first_ref, Node** second_ref)
 	return shuffle_merge(first_ref, second_ref);
 }
 
+Node* test_sorted_merge(Node** first_ref, Node** second_ref)
+{
+	return sorted_merge(first_ref, second_ref);
+}
+
+void test_sorted_intersect() {
+	auto head1 = create_dummy(0);
+	push_back(&head1, 2);
+	push_back(&head1, 4);
+	push_back(&head1, 6);
+	push_back(&head1, 8);
+	push_back(&head1, 10);
+
+	auto head2 = create_dummy(1);
+	push_back(&head2, 3);
+	push_back(&head2, 4);
+	push_back(&head2, 7);
+	push_back(&head2, 9);
+	push_back(&head2, 10);
+
+	std::cout << "intersect1: " << head1 << std::endl;
+	std::cout << "intersect2: " << head2 << std::endl;
+
+	auto result = sorted_intersect(&head1, &head2);
+
+	std::cout << "intersect 3: " << result << std::endl;
+}
+
+void test_reverse()
+{
+	auto head = buildOneTwoThree();
+	reverse(&head);
+	std::cout << "1:" << head << std::endl;
+}
+
+void test_recursive_reverse()
+{
+	auto head = buildOneTwoThree();
+	recursive_reverse(&head);
+	std::cout << "1:" << head << std::endl;
+}
+
+
 int main() {
 
 	auto head = test_create_head();
@@ -176,9 +219,24 @@ int main() {
 	print(&head1);
 	print(&head2);
 
+	insert_sort(&head1);
+
 	auto first_head = buildOneTwoThree();
 	auto second_head = buildOneTwoThree();
-	auto new_head = test_shuffle_merge(&first_head, &second_head);
-	std::cout << "aaa" << new_head << std::endl;
-	//print(&first_head);
+
+	auto new_head = test_sorted_merge(&head1, &second_head);
+	std::cout << "aaa: " << new_head << std::endl;
+
+	push_back(&new_head, 5);
+	merge_sort(&new_head);
+
+	std::cout << std::endl;
+	print(&new_head);
+
+	test_sorted_intersect();
+
+	test_reverse();
+
+	test_recursive_reverse();
+
 }

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <assert.h>
 
 using namespace std;
 
@@ -83,11 +84,34 @@ void alternating_spilt(Node** ref_head,
 /// function to merge two list alternatively, so if 
 /// input a = {1,2,3}, b = {4,5,6}, output list should be 
 /// C = {1,4,2,5,3,6}
+/// method: 1. move to the back of each node
+/// 2. use move_node function to alternatively add 
+/// 3. if one list runs out, the other list puts on
 Node* shuffle_merge(Node** first_head, Node** second_head);
+
+/// function to merge two increasing lists to one list with
+/// increasing order
+/// method 1: use move_node iteratively
+/// method 2: use move_node recursively
+Node* sorted_merge(Node** first_head, Node** second_head);
+
+/// given a list, split the list into two smaller lists, recursively 
+/// sort those lists, and finally merge together the two sorted lists into a single list
+/// use function front_back_spilt() and sorted_merge()
+void merge_sort(Node** ref_head);
+
+/// given two lists of increasing order, return a new list of the intersection of them
+/// should not be changing the original lists
+Node* sorted_intersect(Node** first_head, Node** second_head);
+
+/// reverse a list using move_node function
+void reverse(Node** ref_head);
+
+/// reverse a list using recursion
+void recursive_reverse(Node** ref_head);
 
 /// Print list function
 ostream& operator<<(ostream& s, Node* head);
-
 
 
 
