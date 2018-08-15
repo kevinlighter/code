@@ -175,7 +175,43 @@ void printPathsRecur(Node* node, vector<int> vec)
 	}
 }
 
+void mirror(Node* node)
+{
+	if (node == NULL)
+		return;
 
+	Node* temp = node->left;
+	node->left = node->right;
+	node->right = temp;
+	mirror(node->left);
+	mirror(node->right);
+}
+
+void doubleTree(Node* node)
+{
+	if (node == NULL)
+		return;
+
+	Node* newNode = new_node(node->val);
+	newNode->left = node->left;
+	node->left = newNode;
+
+	doubleTree(newNode->left);
+	doubleTree(node->right);
+}
+
+bool sameTree(Node* node1, Node* node2)
+{
+	if (node1 == NULL && node2 == NULL) {
+		return true;
+	}
+
+	if (node1 == NULL || node2 == NULL) {
+		return false;
+	}
+
+	return (node1->val == node2->val) && sameTree(node1->left, node2->left) && sameTree(node1->right, node2->right);
+}
 
 
 

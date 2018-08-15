@@ -144,7 +144,77 @@ BOOST_AUTO_TEST_CASE(test_print_path_func){
 	node = insert(node, 2);
 	node = insert(node, 8);
 
-	printPath(node);
+	//printPath(node);
+}
+
+BOOST_AUTO_TEST_CASE(test_mirror_func)
+{
+	Node* node = NULL;
+	node = insert(node, 7);
+	node = insert(node, 3);
+	node = insert(node, 9);
+	node = insert(node, 4);
+	node = insert(node, 2);
+	node = insert(node, 8);
+
+	mirror(node);
+	BOOST_REQUIRE(node->val == 7);
+	BOOST_REQUIRE(node->left->val == 9);
+	BOOST_REQUIRE(node->left->right->val == 8);
+	BOOST_REQUIRE(node->right->val == 3);
+	BOOST_REQUIRE(node->right->left->val == 4);
+	BOOST_REQUIRE(node->right->right->val == 2);
+	BOOST_REQUIRE(size(node) == 6);
+}
+
+BOOST_AUTO_TEST_CASE(test_double_tree_func)
+{
+	Node* node = NULL;
+	node = insert(node, 7);
+	node = insert(node, 3);
+	node = insert(node, 9);
+	node = insert(node, 4);
+	node = insert(node, 2);
+	node = insert(node, 8);
+
+	doubleTree(node);
+	BOOST_REQUIRE(size(node) == 12);
+	BOOST_REQUIRE(node->val == 7);
+	BOOST_REQUIRE(node->left->val == 7);
+	BOOST_REQUIRE(node->left->left->val == 3);
+	BOOST_REQUIRE(node->left->left->left->val == 3);
+	BOOST_REQUIRE(node->left->left->left->left->val == 2);
+	BOOST_REQUIRE(node->left->left->left->left->left->val == 2);
+	BOOST_REQUIRE(node->left->left->right->val == 4);
+	BOOST_REQUIRE(node->left->left->right->left->val == 4);
+	BOOST_REQUIRE(node->right->val == 9);
+	BOOST_REQUIRE(node->right->left->val == 9);
+	BOOST_REQUIRE(node->right->left->left->val == 8);
+	BOOST_REQUIRE(node->right->left->left->left->val == 8);
+}
+
+BOOST_AUTO_TEST_CASE(test_same_tree_func)
+{
+	Node* node = NULL;
+	node = insert(node, 7);
+	node = insert(node, 3);
+	node = insert(node, 9);
+	node = insert(node, 4);
+	node = insert(node, 2);
+	node = insert(node, 8);
+
+	Node* node1 = NULL;
+	node1 = insert(node1, 7);
+	node1 = insert(node1, 3);
+	node1 = insert(node1, 9);
+	node1 = insert(node1, 4);
+	node1 = insert(node1, 2);
+	node1 = insert(node1, 8);
+
+	BOOST_REQUIRE(sameTree(node, node1) == true);
+
+	node = insert(node, 18);
+	BOOST_REQUIRE(sameTree(node, node1) == false);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

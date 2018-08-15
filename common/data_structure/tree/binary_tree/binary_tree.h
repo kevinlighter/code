@@ -2,6 +2,7 @@
 #include <string>
 #include <iomanip>
 #include <vector>
+#include <limits.h>
 #include "../../../visualize/print.h"
 
 #ifndef _COMMON_DATA_STRUCTURE_BINARY_TREE_
@@ -63,6 +64,20 @@ void printPath(Node* node);
 
 /// recursive function for printPath()
 void printPathsRecur(Node* node, vector<int> vec);
+
+/// given a node, change it to become a mirror node
+///      5                  5                 
+///    3   8 ->           8   3          
+///   2 4                    4  2  
+void mirror(Node* node);
+
+/// given a tree, create a new duplicate node of each node
+/// insert the duplicate as the left child of the original node
+/// the modified node should still be a BST
+void doubleTree(Node* node);
+
+/// given two trees, return true if they are identical, false otherwise
+bool sameTree(Node* node1, Node* node2);
 
 /// visualize the node
 void print(Node* node, int indent=0);
