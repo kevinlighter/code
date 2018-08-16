@@ -36,6 +36,26 @@ BOOST_AUTO_TEST_CASE(test_insert_func)
 	//print(node);
 }
 
+BOOST_AUTO_TEST_CASE(test_find_func)
+{
+	Node* node = NULL;
+	
+	node = insert(node, 7);
+	node = insert(node, 3);
+	node = insert(node, 9);
+	node = insert(node, 4);
+	node = insert(node, 2);
+	node = insert(node, 8);
+
+	Node* node1 = find(node, 3);
+	BOOST_REQUIRE(node1->val == 3);
+	BOOST_REQUIRE(node1->left->val == 2);
+	BOOST_REQUIRE(node1->right->val == 4);
+
+	Node* node2 = find(node, 11);
+	BOOST_REQUIRE(node2 == NULL);
+}
+
 BOOST_AUTO_TEST_CASE(test_build123)
 {
 	Node* node = buildOneTwoThree();
@@ -90,6 +110,42 @@ BOOST_AUTO_TEST_CASE(test_max_value_func)
 	node = insert(node, 8);
 
 	BOOST_REQUIRE(maxValue(node) == 9);
+}
+
+BOOST_AUTO_TEST_CASE(test_min_node_func)
+{
+	Node* node = NULL;
+	node = insert(node, 7);
+	node = insert(node, 3);
+	node = insert(node, 9);
+	node = insert(node, 4);
+	node = insert(node, 2);
+	node = insert(node, 8);
+
+	Node* node1 = minNode(node);
+	BOOST_REQUIRE(node1->val == 2);
+	Node* node2 = minNode(node->right);
+	BOOST_REQUIRE(node2->val == 8);
+	Node* node3 = NULL;
+	BOOST_REQUIRE(minNode(node3) == NULL);
+}
+
+BOOST_AUTO_TEST_CASE(test_max_node_func)
+{
+	Node* node = NULL;
+	node = insert(node, 7);
+	node = insert(node, 3);
+	node = insert(node, 9);
+	node = insert(node, 4);
+	node = insert(node, 2);
+	node = insert(node, 8);
+
+	Node* node1 = maxNode(node);
+	BOOST_REQUIRE(node1->val == 9);
+	Node* node2 = maxNode(node->left);
+	BOOST_REQUIRE(node2->val == 4);
+	Node* node3 = NULL;
+	BOOST_REQUIRE(maxNode(node3) == NULL);
 }
 
 BOOST_AUTO_TEST_CASE(test_print_sorted_order_func){
@@ -215,6 +271,32 @@ BOOST_AUTO_TEST_CASE(test_same_tree_func)
 
 	node = insert(node, 18);
 	BOOST_REQUIRE(sameTree(node, node1) == false);
+}
+
+BOOST_AUTO_TEST_CASE(test_count_tree_func)
+{
+	BOOST_REQUIRE(countTrees(0) == 1);
+	BOOST_REQUIRE(countTrees(1) == 1);
+	BOOST_REQUIRE(countTrees(2) == 2);
+	BOOST_REQUIRE(countTrees(3) == 5);
+	BOOST_REQUIRE(countTrees(4) == 14);
+}
+
+BOOST_AUTO_TEST_CASE(test_isBST_func)
+{
+	Node* node = NULL;
+	node = insert(node, 7);
+	node = insert(node, 3);
+	node = insert(node, 9);
+	node = insert(node, 4);
+	node = insert(node, 2);
+	node = insert(node, 8);
+
+	BOOST_REQUIRE(isBST(node) == true);
+
+	Node* node1 = new_node(11);
+	node->left->right->right = node1;
+	BOOST_REQUIRE(isBST(node) == false);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -20,6 +20,22 @@ bool look_up(Node* node, int target)
 	}
 }
 
+Node* find(Node* node, int target)
+{
+	if (node == NULL) {
+		return NULL;
+	}
+
+	if (node->val == target)
+		return node;
+
+	if (target < node->val) {
+		return find(node->left, target);
+	} else {
+		return find(node->right, target);
+	}
+}
+
 Node* new_node(int value)
 {
 	Node* node = new Node();
@@ -43,6 +59,18 @@ Node* insert(Node* node, int value)
 
 	return node;
 }
+
+// void delete(int value)
+// {
+// 	Node* target = find(node, value);
+// 	if (target == NULL)
+// 		return;
+
+// 	/// find the leftmost node of the right subtree
+// 	Node* leftmost = minNode(target->right);
+// 	target->val = leftmost->val;
+	
+// }
 
 Node* buildOneTwoThree()
 {
@@ -100,6 +128,30 @@ int maxValue(Node* node)
 	}
 
 	return (maxValue(node->right) > node->val ? maxValue(node->right) : node->val);
+}
+
+Node* minNode(Node* node)
+{
+	if (node == NULL) {
+		return NULL;
+	}
+	if (node->left == NULL){
+		return node;
+	} else {
+		return minNode(node->left);
+	}
+}
+
+Node* maxNode(Node* node)
+{
+	if (node == NULL) {
+		return NULL;
+	}
+	if (node->right == NULL){
+		return node;
+	} else {
+		return maxNode(node->right);
+	}
 }
 
 void printSortedOrder(Node* node)
@@ -211,6 +263,47 @@ bool sameTree(Node* node1, Node* node2)
 	}
 
 	return (node1->val == node2->val) && sameTree(node1->left, node2->left) && sameTree(node1->right, node2->right);
+}
+
+int countTrees(int n)
+{
+	if (n <= 1) {
+		return 1;
+	}
+
+	int sum = 0;
+	int left, right;
+
+	for (int root = 1; root <= n; root ++) {
+		left = countTrees(root - 1);
+		right = countTrees(n - root);
+
+		sum += left*right;
+	}
+	return sum;
+}
+
+bool isBST(Node* node)
+{
+	return isBSTimplement(node, NUMBER_VERY_LARGE, NUMBER_VERY_SMALL);
+}
+
+bool isBSTimplement(Node* node, int max, int min)
+{
+	if (node->val < min || node->val > max)
+		return false;
+
+	if (node->left == NULL && node->right == NULL)
+		return true;
+
+	if (node->left == NULL)
+		return isBSTimplement(node->right, max, node->val);
+
+	if (node->right == NULL)
+		return isBSTimplement(node->left, node->val, min);
+
+	return isBSTimplement(node->right, max, node->val) && isBSTimplement(node->left, node->val, min);
+
 }
 
 

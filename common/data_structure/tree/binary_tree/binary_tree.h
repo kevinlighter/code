@@ -24,12 +24,21 @@ struct Node {
 /// Given a binary tree, check if the target exists and return a bool
 bool look_up(Node* node, int target);
 
+/// Given a binary tree, check if the target exists and if exist, 
+/// return the specific node, otherwise, return NULL
+Node* find(Node* node, int target);
+
 /// help function to create a new node
 Node* new_node(int value);
 
 /// Given a binary tree, insert the target into the right place
 /// and return the modified node
 Node* insert(Node* node, int value);
+
+/// Given a BST, delete the node with the val target
+/// and maintain the structure of remaining BST
+/// if value not found, simply return and do nothing
+//void delete(int value);
 
 /// create 123 binary tree
 ///   2
@@ -47,6 +56,12 @@ int minValue(Node* node);
 
 /// given a node, return the maximum data value in the tree
 int maxValue(Node* node);
+
+/// given a node, return the leftmost (minimum) node donw of it
+Node* minNode(Node* node);
+
+/// given a node, return the rightmost (maximum) node donw of it
+Node* maxNode(Node* node);
 
 /// given a node, print out an increasing order of all values in node
 void printSortedOrder(Node* node);
@@ -82,7 +97,20 @@ bool sameTree(Node* node1, Node* node2);
 /// visualize the node
 void print(Node* node, int indent=0);
 
+/// given a value N representing 1 to n, count the #num of 
+/// different structures that these number will maintain 
+/// in a BST
+/// idea is using a loop, count possible values in left and right
+/// use multiplication (left*right) for the sum
+int countTrees(int n);
 
+/// given a tree, check to find if the tree is a BST or not
+/// idea is, use recursion and pass the largest and smallest value that
+/// the node can have
+bool isBST(Node* node);
+
+/// implement function for isBST()
+bool isBSTimplement(Node* node, int max, int min);
 
 
 } // namespace binary_tree
