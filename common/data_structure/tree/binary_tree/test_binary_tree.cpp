@@ -36,6 +36,27 @@ BOOST_AUTO_TEST_CASE(test_insert_func)
 	//print(node);
 }
 
+BOOST_AUTO_TEST_CASE(test_remove_func)
+{
+	Node* node = NULL;
+	
+	node = insert(node, 7);
+	node = insert(node, 3);
+	node = insert(node, 9);
+	node = insert(node, 4);
+	node = insert(node, 2);
+	node = insert(node, 8);
+
+	remove(node, 7);
+	BOOST_REQUIRE(look_up(node, 7) == false);
+	BOOST_REQUIRE(node->val == 8);
+	BOOST_REQUIRE(node->left->val == 3);
+	BOOST_REQUIRE(node->right->val == 9);
+	BOOST_REQUIRE(node->left->left->val == 2);
+	BOOST_REQUIRE(node->left->right->val == 4);
+	//print(node);
+}
+
 BOOST_AUTO_TEST_CASE(test_find_func)
 {
 	Node* node = NULL;

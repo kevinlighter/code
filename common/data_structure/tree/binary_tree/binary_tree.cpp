@@ -60,17 +60,40 @@ Node* insert(Node* node, int value)
 	return node;
 }
 
-// void delete(int value)
-// {
-// 	Node* target = find(node, value);
-// 	if (target == NULL)
-// 		return;
+Node* remove(Node* node, int value)
+{
+	if (node == NULL)
+		return NULL;
 
-// 	/// find the leftmost node of the right subtree
-// 	Node* leftmost = minNode(target->right);
-// 	target->val = leftmost->val;
-	
-// }
+	if (value < node->val) {
+		node->left = remove(node->left, value);
+	} else if (value > node->val) {
+		node->right = remove(node->right, value);
+	/// found the node
+	} else {
+		if (node->left == NULL && node->right == NULL) {
+			free(node);
+			node = NULL;
+		} // case of no children
+		else if (node->left == NULL) {
+			Node* temp = node;
+			node = node->right;
+			free(temp);
+		} // case of only right children
+		else if (node->right == NULL) {
+			Node* temp = node;
+			node = node->left;
+			free(temp);
+		} // case of only left children
+		else {
+			Node* leftMost = minNode(node->right);
+			node->val = leftMost->val;
+			node->right = remove(node->right, leftMost->val);
+		}
+	}
+
+	return node;
+}
 
 Node* buildOneTwoThree()
 {

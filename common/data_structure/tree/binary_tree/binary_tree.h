@@ -38,7 +38,7 @@ Node* insert(Node* node, int value);
 /// Given a BST, delete the node with the val target
 /// and maintain the structure of remaining BST
 /// if value not found, simply return and do nothing
-//void delete(int value);
+Node* remove(Node* node, int value);
 
 /// create 123 binary tree
 ///   2
