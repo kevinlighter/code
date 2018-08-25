@@ -89,7 +89,7 @@ Node* remove(Node* node, int value)
 			Node* leftMost = minNode(node->right);
 			node->val = leftMost->val;
 			node->right = remove(node->right, leftMost->val);
-		}
+		} // case of two children
 	}
 
 	return node;
