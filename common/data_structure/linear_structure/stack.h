@@ -1,5 +1,4 @@
 #include <iostream>
-#include <string>
 #include <assert.h>
 
 #ifndef _stack_h_
@@ -43,10 +42,13 @@ public:
 	Scalar peek() const;
 
 	/// help function to show stack
-	friend ostream& operator<<(ostream& s, Stack<Scalar> stack) {
-		if (!stack.isEmpty()) {
-			s << stack.pop() << " ";
-			s << stack;
+	friend ostream& operator<<(ostream& s, const Stack<Scalar>& stack) {
+		
+		Stack<Scalar> show_stack = stack;
+
+		if (!show_stack.isEmpty()) {
+			s << show_stack.pop() << " ";
+			s << show_stack;
 		} 
 
 		return s;
