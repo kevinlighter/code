@@ -17,6 +17,13 @@ public:
 
 	~StringMap();
 
+	/// make copying illegal
+	StringMap(const StringMap& src) { }
+
+	/// make assignment illegal
+	StringMap& operator=(const StringMap& src) { return *this;}
+
+
 	/// Funcion to get the value from the specific key
 	string get(const string& key) const;
 
@@ -40,12 +47,7 @@ private:
 	/// private function
 	Cell* findCell(const int& bucket, const string& key) const;
 
-	/// make copying illegal
-	StringMap(const StringMap& src) { }
-
-	/// make assignment illegal
-	StringMap& operator=(const StringMap& src) { return *this;}
-
+	
 private:
 	/// hash function definition
 	static const int HASH_SEED = 5381;
