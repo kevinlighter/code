@@ -61,8 +61,6 @@ BOOST_AUTO_TEST_CASE(test_hash_map_size)
 	auto a = create_hash_map_int_int();
 	BOOST_REQUIRE(a.size() == 3);
 
-	std::cout << a << std::endl;
-
 	auto b = create_hash_map_double_double();
 	BOOST_REQUIRE(b.size() == 3);
 
@@ -98,6 +96,20 @@ BOOST_AUTO_TEST_CASE(test_hash_map_remove)
 	BOOST_REQUIRE(map.size() == 2);
 	map.remove(1.2);
 	BOOST_REQUIRE(map.size() == 2);
+}
+
+BOOST_AUTO_TEST_CASE(test_hash_map_printout)
+{
+	HashMap<int, int> map;
+	map.put(1, 100);
+	map.put(2, 200);
+	map.put(3, 300);
+
+	map.put(400, 100);
+	map.put(500, 200);
+	map.put(600, 300);
+
+	std::cout << map << std::endl;
 }
 
 

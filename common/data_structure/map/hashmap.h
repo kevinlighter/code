@@ -14,6 +14,13 @@ template <class KeyType, class ValueType>
 class HashMap {
 
 public:
+
+	struct Cell {
+		KeyType key;
+		ValueType value;
+		Cell* next;
+	};
+
 	HashMap();
 
 	~HashMap();
@@ -45,8 +52,19 @@ public:
 	/// reset the map
 	void clear();
 
+	/// help function to get variable
+	inline auto buckets() const{
+		return this->buckets_;
+	}
+
+	/// help function to get variable
+	inline int numberOfBucket() const{
+		return this->INITIAL_BUCKET_COUNT;
+	}
+
 	/// print out function
-	ostream& operator<<(ostream& s, const HashMap<KeyType, ValueType>& hash_map);
+	template <class A, class B>
+	friend ostream& operator<<(ostream& s, const HashMap<A, B>& hash_map);
 
 	/// help function for to_string function
 	static string to_string(const int& val);
@@ -57,11 +75,7 @@ public:
 
 private:
 	
-	struct Cell {
-		KeyType key;
-		ValueType value;
-		Cell* next;
-	};
+	
 
 	static const int INITIAL_BUCKET_COUNT = 13;
 
@@ -282,14 +296,13 @@ string HashMap<KeyType, ValueType>::to_string(const string& val) {
 template <typename KeyType, typename ValueType>
 ostream& operator<<(ostream& s, const HashMap<KeyType, ValueType>& hash_map)
 {
-	for (int i=0;i<hash_map.INITIAL_BUCKET_COUNT;i++) {
-		Cell* head = hash_map.buckets_[i];
-		if (head != NULL) {
+	for (int i=0;i<hash_map.numberOfBucket();i++) {
+		auto head = hash_map.buckets()[i];
+		while (head != NULL) {
 			s << head->key << "(" << head->value << ")" << "  ->  ";
 			head = head->next;
-		} else {
-			s << "NULL" << std::endl;
 		}
+		s << "NULL" << std::endl;
 	}
 	return s;
 }
