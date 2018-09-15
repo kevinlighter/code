@@ -42,6 +42,7 @@ Node* new_node(int value)
 	node->val = value;
 	node->left = NULL;
 	node->right = NULL;
+	node->bf = 0;
 	return node;
 }
 
@@ -329,7 +330,50 @@ bool isBSTimplement(Node* node, int max, int min)
 
 }
 
+}
+}
+
+namespace common {
+namespace balanced_btree {
+
+void insertNode(common::binary_tree::Node* node, int val)
+{	
+	insertAVL(node, val);
+}
+
+int insertAVL(common::binary_tree::Node* node, int val)
+{
+	/// If null ptr, return a new tree root node with increasing depth +1
+	if (node == NULL) {
+		node = common::binary_tree::new_node(val);
+		return +1;
+	}
+	if (val == node->val) return 0;
+	/// Go to left subtree
+	if (val < node->val) {
+		int delta = insertAVL(node->left, val);
+		/// If delta = 0, meaning same val has been encountered
+		if (delta == 0) return 0;
+		switch (node->bf) {
+			case +1: node->bf = 0; return 0;
+			case 0 : node->bf = -1; return +1;
+			case -1: fixLeftImbalance(node); return 0;
+		}
+	} else {
+		int delta = insertAVL(node->right, val);
+		/// If delta = 0, meaning same val has been encountered
+		if (delta == 0) return 0;
+		switch (node->bf) {
+			case -1: node->bf = 0; return 0;
+			case 0 : node->bf = +1; return +1;
+			case +1: fixRightImbalance(node); return 0;
+		}
+	}
+}
 
 
 }
+
 }
+
+

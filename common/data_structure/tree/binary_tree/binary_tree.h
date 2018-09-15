@@ -19,6 +19,9 @@ struct Node {
 	int val;
 	Node* left = NULL;
 	Node* right = NULL;
+	/// use "bf" as "balance factor for a node", meaning the depth of right subtree minus
+	/// depth of left subtree
+	int bf;
 };
 
 /// Given a binary tree, check if the target exists and return a bool
@@ -114,6 +117,15 @@ bool isBSTimplement(Node* node, int max, int min);
 
 
 } // namespace binary_tree
+} // namespace common
+
+namespace common {
+namespace balanced_btree {
+
+/// function to insert a node using balancing strategy
+void insertNode(common::binary_tree::Node* node, int val);
+
+} // namespace balanced_btree
 } // namespace common
 
 #endif
