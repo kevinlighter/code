@@ -36,12 +36,12 @@ Node* new_node(int value);
 
 /// Given a binary tree, insert the target into the right place
 /// and return the modified node
-Node* insert(Node* node, int value);
+void insert(Node* &node, int value);
 
 /// Given a BST, delete the node with the val target
 /// and maintain the structure of remaining BST
 /// if value not found, simply return and do nothing
-Node* remove(Node* node, int value);
+void remove(Node* &node, int value);
 
 /// create 123 binary tree
 ///   2
@@ -123,7 +123,28 @@ namespace common {
 namespace balanced_btree {
 
 /// function to insert a node using balancing strategy
-void insertNode(common::binary_tree::Node* node, int val);
+void insertNode(common::binary_tree::Node* &node, int val);
+
+/// function to insert a node, and return an integer showing the change in depth in the tree
+/// which is used to correct the balance factor (bf) ub the parent nodes
+int insertAVL(common::binary_tree::Node* &node, int val);
+
+/// function to fix left imbalance
+/// if node->bf = node->left->bf, perform single rotation
+/// if node->bf != node->left->bf, perform double rotation
+void fixLeftImbalance(common::binary_tree::Node* &node);
+
+/// function to fix right imbalance
+/// if node->bf = node->right->bf, perform single rotation
+/// if node->bf != node->right->bf, perform double rotation
+void fixRightImbalance(common::binary_tree::Node* &node);
+
+/// function to rotate left
+void rotateLeft(common::binary_tree::Node* &node);
+
+/// function to rotate right
+void rotateRight(common::binary_tree::Node* &node);
+
 
 } // namespace balanced_btree
 } // namespace common

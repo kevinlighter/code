@@ -46,30 +46,31 @@ Node* new_node(int value)
 	return node;
 }
 
-Node* insert(Node* node, int value)
+void insert(Node* &node, int value)
 {
-	if (node == NULL) {
-		return new_node(value);
-	}
+	// if (node == NULL) {
+	// 	node = new_node(value);
+	// 	return;
+	// }
 
-	if (value <= node->val) {
-		node->left = insert(node->left, value);
-	} else {
-		node->right = insert(node->right, value);
-	}
+	// if (value <= node->val) {
+	// 	insert(node->left, value);
+	// } else {
+	// 	insert(node->right, value);
+	// }
 
-	return node;
+	common::balanced_btree::insertNode(node, value);
 }
 
-Node* remove(Node* node, int value)
+void remove(Node* &node, int value)
 {
 	if (node == NULL)
-		return NULL;
+		return;
 
 	if (value < node->val) {
-		node->left = remove(node->left, value);
+		remove(node->left, value);
 	} else if (value > node->val) {
-		node->right = remove(node->right, value);
+		remove(node->right, value);
 	/// found the node
 	} else {
 		if (node->left == NULL && node->right == NULL) {
@@ -89,19 +90,18 @@ Node* remove(Node* node, int value)
 		else {
 			Node* leftMost = minNode(node->right);
 			node->val = leftMost->val;
-			node->right = remove(node->right, leftMost->val);
+			remove(node->right, leftMost->val);
 		} // case of two children
 	}
 
-	return node;
 }
 
 Node* buildOneTwoThree()
 {
 	Node* node = NULL;
-	node = insert(node, 2);
-	node = insert(node, 1);
-	node = insert(node, 3);
+	insert(node, 2);
+	insert(node, 1);
+	insert(node, 3);
 	return node;
 }
 
@@ -336,12 +336,12 @@ bool isBSTimplement(Node* node, int max, int min)
 namespace common {
 namespace balanced_btree {
 
-void insertNode(common::binary_tree::Node* node, int val)
+void insertNode(common::binary_tree::Node* &node, int val)
 {	
 	insertAVL(node, val);
 }
 
-int insertAVL(common::binary_tree::Node* node, int val)
+int insertAVL(common::binary_tree::Node* &node, int val)
 {
 	/// If null ptr, return a new tree root node with increasing depth +1
 	if (node == NULL) {
@@ -369,6 +369,66 @@ int insertAVL(common::binary_tree::Node* node, int val)
 			case +1: fixRightImbalance(node); return 0;
 		}
 	}
+}
+
+void fixLeftImbalance(common::binary_tree::Node* &node)
+{
+	auto childNode = node->left;
+	if (childNode->bf != node->bf) {
+		int oldBF = childNode->right->bf;
+		/// perform double rotation
+		/// first rotate the opposite of left child
+		rotateLeft(childNode);
+		/// then rotate the ego node
+		rotateRight(node);
+		node->bf = 0;
+		switch (oldBF) {
+			case -1: node->left->bf = 0; node->right->bf = +1; break;
+			case 0 : node->left->bf = node->right->bf = 0;break;
+			case +1: node->left->bf = -1; node->right->bf = 0; break;
+		}
+	} else {
+		rotateRight(node);
+		node->right->bf = node->bf = 0;
+	}
+}
+
+void fixRightImbalance(common::binary_tree::Node* &node)
+{
+	auto childNode = node->right;
+	if (childNode->bf != node->bf) {
+		int oldBF = childNode->left->bf;
+		/// perform double rotation
+		/// first rotate the opposite of right child
+		rotateRight(childNode);
+		/// then rotate the ego node
+		rotateLeft(node);
+		node->bf = 0;
+		switch (oldBF) {
+			case -1: node->left->bf = 0; node->right->bf = +1; break;
+			case 0 : node->left->bf = node->right->bf = 0;break;
+			case +1: node->left->bf = -1; node->right->bf = 0; break;
+		}
+	} else {
+		rotateLeft(node);
+		node->right->bf = node->bf = 0;
+	}
+}
+
+void rotateLeft(common::binary_tree::Node* &node)
+{
+	auto rightNode = node->right;
+	node->right = rightNode->left;
+	rightNode->left = node;
+	node = rightNode;
+}
+
+void rotateRight(common::binary_tree::Node* &node)
+{
+	auto leftNode = node->left;
+	node->left = leftNode->right;
+	leftNode->right = node;
+	node = leftNode;
 }
 
 

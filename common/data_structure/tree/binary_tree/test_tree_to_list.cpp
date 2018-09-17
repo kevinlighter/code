@@ -60,12 +60,12 @@ BOOST_AUTO_TEST_CASE(test_tree_to_list)
 {
 	Node* node = NULL;
 	
-	node = insert(node, 7);
-	node = insert(node, 3);
-	node = insert(node, 9);
-	node = insert(node, 4);
-	node = insert(node, 2);
-	node = insert(node, 8);
+	insert(node, 7);
+	insert(node, 3);
+	insert(node, 9);
+	insert(node, 4);
+	insert(node, 2);
+	insert(node, 8);
 	//print(node);
 
 	Node* list = treeToList(node);
