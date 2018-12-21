@@ -22,6 +22,8 @@ public:
 
 	/// @brief Delete an edge
 	virtual void deleteEdge(const T& u, const T& v);
+
+	/// @brief Min cut problem
 };
 
 using UndirectGraph = UndirectGraphT<int>;

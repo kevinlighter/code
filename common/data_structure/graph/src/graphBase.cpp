@@ -31,18 +31,29 @@ template <typename T>
 void GraphBaseT<T>::connectUwithV(const T& u, const T& v)
 {
 	auto iterU = graphMap_.find(u);
-	if (graphMap_.count(v) <= 0)
+	auto iterV = graphMap_.find(v);
+	if (iterU == graphMap_.end())
+		this->addNode(u);
+	if (iterV == graphMap_.end())
 		this->addNode(v);
-	if (iterU == graphMap_.end()) {
-		vector<T> vec;
-		vec.reserve(100);
-		vec.push_back(v);
-		graphMap_.insert(pair<T, vector<T> >(u, vec));
-		return;
-	} else {
-		(iterU->second).push_back(v);
-		return;
-	}
+
+	iterU->second.insert(v);
+	return;
+
+
+	// auto iterU = graphMap_.find(u);
+	// if (graphMap_.count(v) <= 0)
+	// 	this->addNode(v);
+	// if (iterU == graphMap_.end()) {
+	// 	unordered_set<T> vec;
+	// 	vec.reserve(100);
+	// 	vec.insert(v);
+	// 	graphMap_.insert(pair<T, unordered_set<T> >(u, vec));
+	// 	return;
+	// } else {
+	// 	(iterU->second).push_back(v);
+	// 	return;
+	// }
 }
 
 template <typename T>
@@ -59,7 +70,7 @@ void GraphBaseT<T>::addNode(const T& u)
 {
 	vector<T> vec;
 	vec.reserve(100);
-	graphMap_.insert(pair<T, vector<T> >(u, vec));
+	graphMap_.insert(pair<T, unordered_set<T> >(u, vec));
 	return;
 }
 
@@ -76,14 +87,7 @@ void GraphBaseT<T>::deleteNode(const T& u)
 
 	/// @brief delete elements connect to this node in other nodes
 	for (auto nodeIter = (this->graphMap_).begin(); nodeIter != (this->graphMap_).end(); nodeIter++) {
-		for (auto elementIter = (nodeIter->second).begin(); elementIter != (nodeIter->second).end(); ) {
-			if (*elementIter == u) {
-				elementIter = (nodeIter->second).erase(elementIter);
-			} else {
-				elementIter ++;
-			}
-
-		}
+		nodeIter->second.erase(u);
 	}
 	return;
 }
@@ -91,18 +95,31 @@ void GraphBaseT<T>::deleteNode(const T& u)
 template <typename T>
 void GraphBaseT<T>::removeVfromU(const T& u, const T& v)
 {
-	auto iter = graphMap_.find(u);
-	if (iter == (this->graphMap_).end())
-		return;
-	for (auto elementIter = (iter->second).begin(); elementIter != (iter->second).end();) {
-		if (*elementIter == v) {
-			elementIter = (iter->second).erase(elementIter);
-			break;
-		} else {
-			elementIter ++;
-		}
+
+	auto iterU = graphMap_.find(u);
+	auto iterV = graphMap_.find(v);
+	if (iterU != graphMap_.end())
+	{
+		iterU->second.erase(v);
 	}
-	return;
+
+
+	if (iterV != graphMap_.end()){
+		iterV->second.erase(u);
+	}
+
+	// auto iter = graphMap_.find(u);
+	// if (iter == (this->graphMap_).end())
+	// 	return;
+	// for (auto elementIter = (iter->second).begin(); elementIter != (iter->second).end();) {
+	// 	if (*elementIter == v) {
+	// 		elementIter = (iter->second).erase(elementIter);
+	// 		break;
+	// 	} else {
+	// 		elementIter ++;
+	// 	}
+	// }
+	// return;
 
 }
 

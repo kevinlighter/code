@@ -17,7 +17,7 @@ class GraphBaseT {
 
 public:
 
-	typedef typename unordered_map<T, vector<T> >::iterator iterator;
+	typedef typename unordered_map<T, unordered_set<T> >::iterator iterator;
 
 	GraphBaseT() = default;
 	~GraphBaseT() = default;
@@ -49,12 +49,18 @@ public:
 
 	/// @brief get number of edge in a specific node
 	inline int size_of_node(const T& u) const {
-		return graphMap_.find(u)->second.size();
+		auto it = graphMap_.find(u);
+		if (it == graphMap_.end())
+			return 0;
+		return it->second.size();
 	}
 
 	/// @brief get the vector of edges that this node connect
-	inline vector<T> edge_of_node(const T& u) const {
-		return graphMap_.find(u)->second;
+	inline unordered_set<T> edge_of_node(const T& u) const {
+		auto it = graphMap_.find(u);
+		if (it == graphMap_.end())
+			return 0;
+		return it->second;
 	}
 
 	/// @brief return the map of the graph
@@ -93,7 +99,7 @@ public:
 	}
 
 protected:
-	unordered_map<T, vector<T> >  graphMap_;
+	unordered_map<T, unordered_set<T> >  graphMap_;
 
 protected:
 
@@ -110,7 +116,7 @@ protected:
 
 template <class T>
 ostream& operator<<(ostream& s, const vector<T>& vec){
-	s << "edge is: ";
+	s << "Vector is: " << std::endl;
 	for (auto& t : vec) {
 		s << t << " ";
 	}
@@ -119,7 +125,7 @@ ostream& operator<<(ostream& s, const vector<T>& vec){
 
 template <class T>
 ostream& operator<<(ostream& s, const unordered_set<T>& set){
-	s << "explored nodes are: " << std::endl;
+	s << "Set is: " << std::endl;
 	for (auto& t : set) {
 		s << t << " ";
 	}
