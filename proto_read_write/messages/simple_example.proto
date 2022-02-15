@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package simple_example; // Requried to generate valid code.
+
+enum RecordType {
+    LONG_MESSAGE = 0;
+    SHORT_MESSAGE = 1;
+}
+
+message Record {
+  string message = 1;
+  int32 unique_id = 2;
+  RecordType record_type = 3;
+}
+
+message Letter {
+    repeated Record records = 1;
+    oneof metadata {
+        string name = 2;
+        string address = 3;
+        string phone_number = 4;
+    }
+}

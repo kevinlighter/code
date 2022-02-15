@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package common;
+
+message TimeStamp {
+    int64 seconds = 1;
+    int64 nanoseconds = 2;
+}
+
+message Payload {
+    enum DataType {
+        UNSET = 0;
+        DOUBLE = 1;
+        INT = 2;
+        DOUBLE_SERIES = 3;
+        INT_SERIES = 4;
+    }
+
+    oneof value {
+        double double_value = 1;
+        int64 int_value = 2;
+        DOUBLE_SERIES double_series_value = 3;
+        INT_SERIES int_series_value = 4;
+    }
+
+    DataType data_type = 9;
+}
+
+message DOUBLE_SERIES {
+    repeated double value = 1;
+}
+
+message INT_SERIES {
+    repeated int64 value = 1;
+}
+
+message SingleData {
+    TimeStamp time_stamp = 1;
+    Payload payload = 2;
+}
+
+message SerialData {
+    repeated SingleData serial_data = 1;
+}
+
+message GenericMessage {
+    string unique_id = 1;
+    oneof data_type {
+        SingleData single_data = 2;
+        SerialData serial_data = 3;
+    }
+    map<string, string> config = 4;
+}
